@@ -42,6 +42,8 @@ const HomePage: React.FC = () => {
   });
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isProcessingPDF, setIsProcessingPDF] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
