@@ -9,7 +9,7 @@ import { ArrowLeft, Save, FileDown, Play, Plus } from 'lucide-react';
 const FlashcardPreviewPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { flashcards: initialFlashcards, originalText, quiz } = location.state || {};
+  const { flashcards: initialFlashcards, originalText, quiz, source } = location.state || {};
   
   const [flashcards, setFlashcards] = useState<Flashcard[]>(initialFlashcards || []);
   const [deckName, setDeckName] = useState('');
