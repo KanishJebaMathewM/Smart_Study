@@ -337,6 +337,43 @@ const HomePage: React.FC = () => {
             </h2>
             
             <div className="space-y-6">
+              {/* Error/Success Messages */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <X className="h-5 w-5 text-red-400" />
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm text-red-800">{error}</p>
+                    </div>
+                    <div className="ml-auto pl-3">
+                      <div className="-mx-1.5 -my-1.5">
+                        <button
+                          onClick={() => setError(null)}
+                          className="inline-flex rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {success && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm text-green-800">{success}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* File Upload Section */}
               <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 transition-colors hover:border-slate-400">
                 <input
