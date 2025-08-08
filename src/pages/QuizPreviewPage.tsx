@@ -109,6 +109,9 @@ const QuizPreviewPage: React.FC = () => {
         <div className="text-right">
           <h1 className="text-2xl font-bold text-slate-900">Quiz Preview</h1>
           <p className="text-slate-600">{questions.length} questions generated</p>
+          {source && (
+            <p className="text-sm text-slate-500">Source: {source}</p>
+          )}
         </div>
       </div>
 
