@@ -127,6 +127,8 @@ const HomePage: React.FC = () => {
     setIsGenerating(true);
 
     try {
+      setError(null);
+
       const options: GenerationOptions = {
         quantity,
         creativity,
@@ -136,55 +138,112 @@ const HomePage: React.FC = () => {
       // For large content (10k+ words), use chunking
       const isLargeContent = content.length > 10000;
 
+      if (!useAI) {
+        setSuccess('Using local processing mode...');
+      } else {
+        setSuccess('Generating with AI...');
+      }
+
       if (generationType === 'flashcards') {
-        const flashcards = isLargeContent 
+        const flashcards = isLargeContent
           ? await generateFromLargeText(content, 'flashcards', options) as any[]
           : await generateFlashcardsFromText(content, options);
-        
-        navigate('/preview/flashcards', { 
-          state: { 
-            flashcards, 
+
+        navigate('/preview/flashcards', {
+          state: {
+            flashcards,
             originalText: content,
-            source: source.filename ? `${source.filename}` : 'Text input'
-          } 
+            source: source.filename ? `${source.filename}` : 'Text input',
+            generatedWithAI: useAI
+          }
         });
       } else if (generationType === 'quizzes') {
         const quiz = isLargeContent
           ? await generateFromLargeText(content, 'quiz', options) as any[]
           : await generateQuizFromText(content, options);
-        
-        navigate('/preview/quiz', { 
-          state: { 
-            questions: quiz, 
+
+        navigate('/preview/quiz', {
+          state: {
+            questions: quiz,
             originalText: content,
-            source: source.filename ? `${source.filename}` : 'Text input'
-          } 
+            source: source.filename ? `${source.filename}` : 'Text input',
+            generatedWithAI: useAI
+          }
         });
       } else {
         // Both - generate flashcards and quiz
         const [flashcards, quiz] = await Promise.all([
-          isLargeContent 
+          isLargeContent
             ? generateFromLargeText(content, 'flashcards', options)
             : generateFlashcardsFromText(content, options),
           isLargeContent
             ? generateFromLargeText(content, 'quiz', { ...options, quantity: Math.ceil(quantity / 2) })
             : generateQuizFromText(content, { ...options, quantity: Math.ceil(quantity / 2) })
         ]);
-        
-        navigate('/preview/flashcards', { 
-          state: { 
-            flashcards, 
+
+        navigate('/preview/flashcards', {
+          state: {
+            flashcards,
             quiz,
             originalText: content,
-            source: source.filename ? `${source.filename}` : 'Text input'
-          } 
+            source: source.filename ? `${source.filename}` : 'Text input',
+            generatedWithAI: useAI
+          }
         });
       }
     } catch (error) {
       console.error('Generation error:', error);
-      alert('Failed to generate study materials. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate study materials';
+
+      if (errorMessage.includes('credits') || errorMessage.includes('402')) {
+        setError('AI service has insufficient credits. Switching to local processing...');
+        // Retry with local processing
+        try {
+          const localOptions = { ...options, useAI: false };
+          if (generationType === 'flashcards') {
+            const flashcards = await generateFlashcardsFromText(content, localOptions);
+            navigate('/preview/flashcards', {
+              state: {
+                flashcards,
+                originalText: content,
+                source: source.filename ? `${source.filename}` : 'Text input',
+                generatedWithAI: false
+              }
+            });
+          } else if (generationType === 'quizzes') {
+            const quiz = await generateQuizFromText(content, localOptions);
+            navigate('/preview/quiz', {
+              state: {
+                questions: quiz,
+                originalText: content,
+                source: source.filename ? `${source.filename}` : 'Text input',
+                generatedWithAI: false
+              }
+            });
+          } else {
+            const [flashcards, quiz] = await Promise.all([
+              generateFlashcardsFromText(content, localOptions),
+              generateQuizFromText(content, { ...localOptions, quantity: Math.ceil(quantity / 2) })
+            ]);
+            navigate('/preview/flashcards', {
+              state: {
+                flashcards,
+                quiz,
+                originalText: content,
+                source: source.filename ? `${source.filename}` : 'Text input',
+                generatedWithAI: false
+              }
+            });
+          }
+        } catch (localError) {
+          setError('Failed to generate study materials even with local processing. Please try again.');
+        }
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsGenerating(false);
+      setTimeout(() => setSuccess(null), 3000);
     }
   };
 
