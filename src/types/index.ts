@@ -38,3 +38,15 @@ export interface QuizResult {
 }
 
 export type GenerationType = 'flashcards' | 'quizzes' | 'both';
+
+export interface GenerationOptions {
+  quantity: number;
+  creativity: number; // 0-1 scale for temperature
+  useAI: boolean;
+}
+
+export interface StudyMaterialSource {
+  type: 'text' | 'pdf';
+  content: string;
+  filename?: string;
+}
