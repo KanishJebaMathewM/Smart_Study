@@ -1,14 +1,8 @@
-import { Flashcard, QuizQuestion } from '../types';
+import { Flashcard, QuizQuestion, GenerationOptions } from '../types';
 
 // OpenRouter API configuration
 const OPENROUTER_API_KEY = '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';
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
-
-export interface GenerationOptions {
-  quantity: number;
-  creativity: number; // 0-1 scale for temperature
-  useAI: boolean;
-}
 
 export async function generateFlashcardsFromText(
   text: string, 
