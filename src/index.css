@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom slider styles */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #e2e8f0;
+  outline: none;
+  border-radius: 0.5rem;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom 3D card flip animation */
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
