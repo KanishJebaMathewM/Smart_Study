@@ -256,25 +256,6 @@ function extractConcepts(text: string): string[] {
   return [...new Set([...words, ...phrases])].slice(0, 10);
 }
 
-// PDF text extraction utility
-export async function extractTextFromPDF(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      try {
-        // Simple text extraction - in a real app, you'd use pdf-parse or similar
-        const text = event.target?.result as string;
-        // For now, we'll just return the raw text
-        // In production, you'd want to use a proper PDF parsing library
-        resolve(text || '');
-      } catch (error) {
-        reject(error);
-      }
-    };
-    reader.onerror = () => reject(new Error('Failed to read PDF file'));
-    reader.readAsText(file);
-  });
-}
 
 // Add support for handling large documents by chunking
 export function chunkText(text: string, maxChunkSize: number = 8000): string[] {
