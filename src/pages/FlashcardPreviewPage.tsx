@@ -93,6 +93,9 @@ const FlashcardPreviewPage: React.FC = () => {
         <div className="text-right">
           <h1 className="text-2xl font-bold text-slate-900">Flashcard Preview</h1>
           <p className="text-slate-600">{flashcards.length} flashcards generated</p>
+          {source && (
+            <p className="text-sm text-slate-500">Source: {source}</p>
+          )}
         </div>
       </div>
 
