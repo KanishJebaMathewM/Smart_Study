@@ -8,7 +8,7 @@ import { ArrowLeft, Save, FileDown, Play, Plus, Edit2, Trash2 } from 'lucide-rea
 const QuizPreviewPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { questions: initialQuestions, originalText } = location.state || {};
+  const { questions: initialQuestions, originalText, source } = location.state || {};
   
   const [questions, setQuestions] = useState<QuizQuestion[]>(initialQuestions || []);
   const [quizName, setQuizName] = useState('');
