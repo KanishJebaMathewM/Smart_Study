@@ -92,7 +92,16 @@ const FlashcardPreviewPage: React.FC = () => {
         
         <div className="text-right">
           <h1 className="text-2xl font-bold text-slate-900">Flashcard Preview</h1>
-          <p className="text-slate-600">{flashcards.length} flashcards generated</p>
+          <p className="text-slate-600">
+            {flashcards.length} flashcards generated
+            <span className={`ml-2 px-2 py-1 text-xs rounded-full ${
+              generatedWithAI === false
+                ? 'bg-yellow-100 text-yellow-800'
+                : 'bg-green-100 text-green-800'
+            }`}>
+              {generatedWithAI === false ? 'Local' : 'AI'}
+            </span>
+          </p>
           {source && (
             <p className="text-sm text-slate-500">Source: {source}</p>
           )}
