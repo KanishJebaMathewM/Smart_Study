@@ -63,16 +63,28 @@ const HomePage: React.FC = () => {
     setUploadedFile(file);
 
     try {
+      setError(null);
       const extractedText = await extractTextFromPDF(file);
+
+      if (extractedText.length < 100) {
+        throw new Error('PDF contains very little text. Please ensure the PDF has readable text content.');
+      }
+
       setSource({
         type: 'pdf',
         content: extractedText,
         filename: file.name
       });
       setNoteText(extractedText);
+      setSuccess(`Successfully extracted ${extractedText.length.toLocaleString()} characters from ${file.name}`);
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccess(null), 3000);
     } catch (error) {
       console.error('PDF processing error:', error);
-      alert('Failed to extract text from PDF. Please try a different file.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to extract text from PDF';
+      setError(errorMessage);
+      removeFile();
     } finally {
       setIsProcessingPDF(false);
     }
