@@ -1,7 +1,7 @@
 import { Flashcard, QuizQuestion, GenerationOptions } from '../types';
 
 // OpenRouter API configuration
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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';
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export async function generateFlashcardsFromText(
